@@ -5,9 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Sommerfeld Office Monitoring</title>
-        <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+        
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/lib/c3.min.css">
+        <link rel="stylesheet" href="/css/c3.css">
         <link rel="stylesheet" href="/css/style.css">
         <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="/img/apple-icon-60x60.png">
@@ -60,10 +60,13 @@
                 </div>
             </div>
         </div>
-        
+        <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/lib/jquery-2.2.3.min.js">\x3C/script>')</script>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/lib/d3.v3.min.js"></script>
-        <script src="/lib/c3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+        <script>window.d3 || document.write('<script src="/lib/d3.v3.min.js">\x3C/script>')</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+        <script>window.c3 || document.write('<script src="/lib/c3.min.js">\x3C/script>')</script>
         <script src="/js/graph.js"></script>
     </body>
 </html>
