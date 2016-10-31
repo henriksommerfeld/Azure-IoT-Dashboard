@@ -1,5 +1,9 @@
 var io = io.connect();
 
+var round = function(value) {
+    return value.toFixed(2);
+};
+
 var temperatureChart = c3.generate({
     bindto: '#temp-graph',
     data: {
@@ -12,6 +16,11 @@ var temperatureChart = c3.generate({
             type: 'timeseries',
             tick: {
                 format: '%X'
+            }
+        },
+        y: {
+            tick: {
+                format: function (d) { return round(d); }
             }
         }
     }
@@ -29,6 +38,11 @@ var humidityChart = c3.generate({
             type: 'timeseries',
             tick: {
                 format: '%X'
+            }
+        },
+        y: {
+            tick: {
+                format: function (d) { return round(d) + "%"; }
             }
         }
     }
@@ -76,10 +90,6 @@ var initializeLabels = function (data) {
             labels.push(key);
         }
     });
-};
-
-var round = function(value) {
-    return value.toFixed(2);
 };
 
 var updateSingleTemperature = function(value) {
