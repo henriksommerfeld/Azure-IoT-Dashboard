@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Sommerfeld Office Monitoring</title>
+        <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/lib/c3.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/img/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+    </head>
+    <body>        
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1>Sommerfeld Office Monitoring</h1>                    
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-xs-12"><span>Updated:</span> <span id="last-updated">No data yet, this can take up to 30 seconds</div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Temperature</h2>
+                    <div class="current-value"><span id="current-temp-value">?</span> &#8451;</div>
+                    <div id="temp-graph"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Humidity</h2>
+                    <div class="current-value"><span id="current-humidity-value">?</span> %</div>
+                    <div id="humidity-graph"></div>
+                </div>
+            </div>
+            <div class="row hidden">
+                <div class="col-md-12">
+                    <h2>Air Pressure</h2>
+                    <div class="current-value"><span id="current-pressure-value">?</span></div>
+                    <div id="pressure-graph"></div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/lib/d3.v3.min.js"></script>
+        <script src="/lib/c3.min.js"></script>
+        <script src="/js/graph.js"></script>
+        <script src="/js/led.js"></script>
+    </body>
+</html>

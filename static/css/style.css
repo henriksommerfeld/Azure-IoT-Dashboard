@@ -1,0 +1,13 @@
+body {
+    padding: 20px;
+    font: 10px sans-serif;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #00B7FF;
+}
+
+.current-value {
+    font-size: 4rem;
+}
