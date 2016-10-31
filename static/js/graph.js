@@ -60,8 +60,10 @@ var appendHumidityColumn = function (index, label, value) {
         if (humidityColumns.length <= index) {
             humidityColumns.push([label]);
         }
-        humidityColumns[index].push(value);
-        if (humidityColumns[index].length > 20) {
+        if (humidityColumns[index]) {
+            humidityColumns[index].push(value);
+        }
+        if (!!humidityColumns[index] && humidityColumns[index].length > 20) {
             humidityColumns[index].splice(1, 1);
         }
     }
