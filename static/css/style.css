@@ -1,7 +1,8 @@
 body {
     padding: 20px;
-    font: 10px sans-serif;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+    background: #fff;
+    transition:background-color 1s ease;
 }
 
 a {
@@ -10,4 +11,12 @@ a {
 
 .current-value {
     font-size: 4rem;
+}
+
+.updated {
+    background:#ebf6f9;
+}
+
+.last-updated-container {
+    display: none;
 }

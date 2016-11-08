@@ -1,15 +1,14 @@
 var io = io.connect();
 
 var round = function(value) {
-    return value.toFixed(2);
+    return value.toFixed(1);
 };
 
 var temperatureChart = c3.generate({
     bindto: '#temp-graph',
     data: {
         x: 'x',
-        columns: [
-        ]
+        columns: []
     },
     axis: {
         x: {
@@ -23,6 +22,9 @@ var temperatureChart = c3.generate({
                 format: function (d) { return round(d); }
             }
         }
+    },
+    point: {
+        r: 4
     }
 });
 
@@ -30,8 +32,7 @@ var humidityChart = c3.generate({
     bindto: '#humidity-graph',
     data: {
         x: 'x',
-        columns: [
-        ]
+        columns: []
     },
     axis: {
         x: {
@@ -45,42 +46,68 @@ var humidityChart = c3.generate({
                 format: function (d) { return round(d) + "%"; }
             }
         }
+    },
+    point: {
+        r: 4
     }
 });
 
-var LABEL_PREFIXES = /^temperature|^humidity|^press/;
+var pressureChart = c3.generate({
+    bindto: '#pressure-graph',
+    data: {
+        x: 'x',
+        columns: []
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                format: '%X'
+            }
+        },
+        y: {
+            tick: {
+                format: function (d) { return round(d) + "%"; }
+            }
+        }
+    },
+    point: {
+        r: 4
+    }
+});
+
+var LABEL_PREFIXES = /^temperature|^humidity|^pressure/;
 var labels = null;
 var temperatureColumns = [];
 var humidityColumns = [];
+var pressureColumns = [];
 
-var appendTemperatureColumn = function (index, label, value) {
-    if(!value){
+var appenColumn = function (index, label, value, columns) {
+    if (!value || !columns) {
         console.log('value is null ' + label + ' is skipped');
-    } else{
-        if (temperatureColumns.length <= index) {
-            temperatureColumns.push([label]);
+    } else {
+        if (columns.length <= index) {
+            columns.push([label]);
         }
-        temperatureColumns[index].push(value);
-        if (temperatureColumns[index].length > 20) {
-            temperatureColumns[index].splice(1, 1);
+        if (columns[index]) {
+            columns[index].push(value);
+            if (columns[index].length > 20) {
+                columns[index].splice(1, 1);
+            }
         }
     }
 };
 
+var appendTemperatureColumn = function (index, label, value) {
+    appenColumn(index, label, value, temperatureColumns);
+};
+
 var appendHumidityColumn = function (index, label, value) {
-    if(!value){
-        console.log('value is null ' + label + ' is skipped');
-    } else{
-        if (humidityColumns.length <= index) {
-            humidityColumns.push([label]);
-        }
-        if (humidityColumns[index]) {
-            humidityColumns[index].push(value);
-        }
-        if (!!humidityColumns[index] && humidityColumns[index].length > 20) {
-            humidityColumns[index].splice(1, 1);
-        }
-    }
+    appenColumn(index, label, value, humidityColumns);
+};
+
+var appendPressureColumn = function (index, label, value) {
+    appenColumn(index, label, value, pressureColumns);
 };
 
 var initializeLabels = function (data) {
@@ -100,19 +127,34 @@ var updateSingleHumidity = function(value) {
     $('#current-humidity-value').text(value);    
 };
 
-var showLastUpdate = function(timestamp) {
-    $('#last-updated').text(new Date(timestamp));
+var updateSinglePressure = function(value) {
+    $('#current-pressure-value').text(value);    
 };
 
+var showLastUpdate = function(timestamp) {
+    if ($('#no-data').is(':visible')) {
+        $('#no-data').hide('fast');
+        $('.last-updated-container').show('fast');        
+    }
+    
+    $('#last-updated').text(new Date(timestamp));
+    var target = $('body');
+    target.toggleClass('updated');
+    setTimeout(function() { 
+        target.toggleClass('updated'); 
+    }, 1000); 
+};
 
 io.on('data', function (incomingData) {
     // Initialize labels from incoming data
     if (labels === null) {
         initializeLabels(incomingData);
     }
-    if(incomingData.timestamp){
+    if (incomingData.timestamp){
         appendTemperatureColumn(0, 'x', new Date(incomingData.timestamp));
         appendHumidityColumn(0, 'x', new Date(incomingData.timestamp));
+        appendPressureColumn(0, 'x', new Date(incomingData.timestamp));
+        
         for (var i = 0; i < labels.length; i++) {
             showLastUpdate(incomingData.timestamp);
 
@@ -127,17 +169,41 @@ io.on('data', function (incomingData) {
                 updateSingleHumidity(latestHumidity);                
                 appendHumidityColumn(i + 1, labels[i], latestHumidity);
             }
+
+            if (labels[i] === 'pressure') {            
+                var latestPressure = round(incomingData[labels[i]]);
+                updateSinglePressure(latestPressure);
+                appendPressureColumn(i + 1, labels[i], latestPressure);
+            }
         }
     } else{
         console.log('Skipping bad timestamp');   
     }
     temperatureChart.load({
-        columns: temperatureColumns
+        columns: temperatureColumns,
+        colors: {'temperature': '#1F77B4'}
     });
     humidityChart.load({
-        columns: humidityColumns
+        columns: humidityColumns,
+        colors: {'humidity': '#FF7F0E'}
+    });
+    pressureChart.load({
+        columns: pressureColumns,
+        colors: {'pressure': '#2CA02C'}
     });
 });
 
 // Listen for session event.
 io.emit('ready');
+
+$(function(){
+    var progress = 0;
+    function timeout() {
+        setTimeout(function () {
+            $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
+            progress++;
+            timeout();
+        }, 30000 / 100);
+    }  
+     timeout();      
+});

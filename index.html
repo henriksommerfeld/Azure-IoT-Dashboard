@@ -35,28 +35,45 @@
                     <h1>Sommerfeld Office Monitoring</h1>                    
                 </div>                
             </div>
-            <div class="row">
-                <div class="col-xs-12"><span>Updated:</span> <span id="last-updated">No data yet, this can take up to 30 seconds</div>
+            <div class="row" id="no-data">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-12"><h2>No data yet, this can take up to 30 seconds</h2></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                    <span class="sr-only">0% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
             </div>
-            <div class="row">
+            <div class="row last-updated-container">
+                <div class="col-xs-12"><span>Updated:</span> <span id="last-updated">No data yet, this can take up to 30 seconds...</div>
+            </div>
+            <div class="row has-data">
                 <div class="col-md-12">
                     <h2>Temperature</h2>
                     <div class="current-value"><span id="current-temp-value">?</span> &#8451;</div>
-                    <div id="temp-graph"></div>
+                    <div id="temp-graph" class="chart"></div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row has-data">
                 <div class="col-md-12">
                     <h2>Humidity</h2>
                     <div class="current-value"><span id="current-humidity-value">?</span> %</div>
-                    <div id="humidity-graph"></div>
+                    <div id="humidity-graph" class="chart"></div>
                 </div>
             </div>
-            <div class="row hidden">
+            <div class="row has-data">
                 <div class="col-md-12">
                     <h2>Air Pressure</h2>
-                    <div class="current-value"><span id="current-pressure-value">?</span></div>
-                    <div id="pressure-graph"></div>
+                    <div class="current-value"><span id="current-pressure-value">?</span> mbar</div>
+                    <div id="pressure-graph" class="chart"></div>
                 </div>
             </div>
         </div>
