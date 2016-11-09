@@ -198,12 +198,18 @@ io.emit('ready');
 
 $(function(){
     var progress = 0;
-    function timeout() {
-        setTimeout(function () {
+    var timeoutId = null;
+    var showProgressBar = function() {
+        timeoutId = setTimeout(function () {
             $('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress);
             progress++;
-            timeout();
-        }, 30000 / 100);
+            if (progress <= 100) {
+                showProgressBar();
+            }
+            else {
+                clearTimeout(timeoutId);
+            }
+        }, 300);
     }  
-     timeout();      
+     showProgressBar();      
 });
